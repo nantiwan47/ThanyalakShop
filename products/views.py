@@ -1,16 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum, Count
-from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+
+from .decorators import admin_required
 from .models import Product, Cart, CartItem, OrderItem, Order
 from .forms import RegisterForm, ProductForm
 import plotly.graph_objects as go
+from django.db.models.functions import TruncDay, TruncMonth
 
-
+# ------ ผู้ใช้ ------
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -20,7 +22,7 @@ def register(request):
     else:
         form = RegisterForm()
 
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'accounts/register.html', {'form': form})
 
 def user_login(request):
     if request.method == 'POST':
@@ -32,7 +34,7 @@ def user_login(request):
             return redirect('/')
         else:
             messages.error(request, "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
-    return render(request, 'registration/login.html')
+    return render(request, 'accounts/login.html')
 
 def user_logout(request):
     logout(request)
@@ -40,7 +42,7 @@ def user_logout(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    return render(request, 'accounts/profile.html')
 
 @login_required
 def edit_profile(request):
@@ -55,8 +57,21 @@ def edit_profile(request):
         user.save()
         return redirect("profile")
 
-    return render(request, "edit_profile.html")
+    return render(request, "accounts/edit_profile.html")
 
+
+# ------ แอดมิน ------
+def admin_register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.role = "admin"
+            user.save()
+            return redirect("admin_login")
+    else:
+        form = RegisterForm()
+    return render(request, "accounts/admin-register.html", {"form": form})
 def admin_login(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -65,12 +80,11 @@ def admin_login(request):
 
         if user and (user.is_superuser or getattr(user, "role", "") == "admin"):
             login(request, user)
-            messages.success(request, "เข้าสู่ระบบสำเร็จ!")
             return redirect("admin_dashboard")
         else:
             messages.error(request, "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
 
-    return render(request, "registration/admin-login.html")
+    return render(request, "accounts/admin-login.html")
 
 @login_required
 def admin_logout(request):
@@ -78,7 +92,7 @@ def admin_logout(request):
     return redirect("admin_login")
 
 
-
+# ------ หน้าร้านค้า ------
 def home(request):
     # ดึงรายการหมวดหมู่จาก choices
     categories = dict(Product.CATEGORY_CHOICES)  # แปลง tuple เป็น dict
@@ -89,7 +103,7 @@ def home(request):
         products = Product.objects.filter(category=key).order_by('-created_at')[:10]
         if products.exists():  # ตรวจสอบว่าหมวดหมู่นั้นมีสินค้า
             category_products[key] = {"label": label, "products": products}
-    return render(request, 'home.html', {'category_products': category_products})
+    return render(request, 'shop/home.html', {'category_products': category_products})
 
 def search_results(request):
     # รับค่าจาก query parameters
@@ -117,11 +131,11 @@ def search_results(request):
         products = products.filter(price__lte=max_price)  # กรองราคาสูงสุด
 
     # ใช้ Paginator แบ่งหน้า (แสดง 10 รายการต่อหน้า)
-    paginator = Paginator(products, 10)
+    paginator = Paginator(products, 20)
     page_obj = paginator.get_page(page_number)
 
 
-    return render(request, 'search_results.html', {
+    return render(request, 'shop/search_results.html', {
         'page_obj': page_obj,
         'query': query,
         'category': category,
@@ -140,13 +154,13 @@ def product_detail(request, pk):
     ).aggregate(sold_quantity=Sum('quantity'))['sold_quantity'] or 0
 
 
-    return render(request, 'product_detail.html', {
+    return render(request, 'shop/product_detail.html', {
         'product': product,
         'sold_quantity': sold_quantity,
     })
 
 
-
+# ------ ตระกร้าสินค้า ------
 @login_required
 def cart_detail(request):
     # ดึงตะกร้าของผู้ใช้ ถ้าไม่มีจะสร้างขึ้นใหม่
@@ -161,7 +175,7 @@ def cart_detail(request):
         # คำนวณรวมราคาทั้งหมดในตะกร้า
     total_price = sum(item.quantity * item.product.price for item in cart_items)
 
-    return render(request, 'cart.html', {
+    return render(request, 'shop/cart.html', {
         'cart': cart,
         'cart_items': cart_items,
         'total_price': total_price
@@ -231,7 +245,7 @@ def delete_cart(request, pk):
     return redirect('cart')
 
 
-
+# ------ ทำการสั่งซื้อสินค้าและดูสถานะการสั่งซื้อ ------
 @login_required
 def checkout(request):
     cart_items = CartItem.objects.filter(cart__user=request.user)
@@ -278,7 +292,7 @@ def checkout(request):
         messages.success(request, "ทำการสั่งซื้อสำเร็จ! กรุณารอการดำเนินการ")
         return redirect("order_status")
 
-    return render(request, "checkout.html", {
+    return render(request, "shop/checkout.html", {
         "cart_items": cart_items,
         "total_price": total_price
     })
@@ -290,17 +304,40 @@ def order_status_view(request):
     else:
         orders = []
 
-    return render(request, "order_status.html", {"orders": orders})
+    return render(request, "shop/order_status.html", {"orders": orders})
 
 
-
+# ------ สำหรับหน้าแอดมิน ------
+@admin_required
 def admin_dashboard(request):
+    today = now().date()
+    current_month = today.month
+    current_year = today.year
+
+    # จำนวนสินค้าทั้งหมด
+    total_products = Product.objects.count()
+
+    # ยอดขายรวมวันนี้
+    today_sales = Order.objects.filter(
+        status='completed',
+        created_at__date=today
+    ).aggregate(total=Sum('total_price'))['total'] or 0
+
     # คำนวณยอดขายรวม
     total_sales = Order.objects.filter(status='completed').aggregate(Sum('total_price'))['total_price__sum'] or 0
+
     # คำนวณจำนวนคำสั่งซื้อที่รอดำเนินการ
     pending_orders = Order.objects.filter(status='preparing').count()
+
     # คำนวณจำนวนลูกค้า
     total_customers = Order.objects.values('user').distinct().count()
+
+    # จำนวนออเดอร์เดือนนี้
+    month_orders = Order.objects.filter(
+        created_at__year=current_year,
+        created_at__month=current_month
+    ).count()
+
     # ดึงสินค้าที่เหลือน้อยกว่า 15 ชิ้น
     low_stock_products = Product.objects.filter(stock__lt=15)
     low_stock_count = low_stock_products.count()  # จำนวนสินค้าที่ใกล้หมด
@@ -319,19 +356,33 @@ def admin_dashboard(request):
         marker=dict(color='blue')
     )])
 
+    top_products_graph.update_layout(
+        xaxis_title='สินค้า',
+        yaxis_title='จำนวนคำสั่งซื้อสินค้า',
+        template='plotly',
+    )
+
 
     # หมวดหมู่สินค้าที่ขายดีที่สุด
     top_categories = OrderItem.objects.filter(order__status='completed') \
                          .values('product__category') \
                          .annotate(total_sold=Sum('quantity')) \
                          .order_by('-total_sold')[:10]
-    category_names = [item['product__category'] for item in top_categories]
+    # แปลง key เป็นชื่อไทย
+    category_names = [dict(Product.CATEGORY_CHOICES).get(item['product__category'], item['product__category'])
+                      for item in top_categories]
     category_sold = [item['total_sold'] for item in top_categories]
     top_categories_graph = go.Figure(data=[go.Bar(
         x=category_names,
         y=category_sold,
         marker=dict(color='red')
     )])
+
+    top_categories_graph.update_layout(
+        xaxis_title='หมวดหมู่สินค้า',
+        yaxis_title='จำนวนคำสั่งซื้อสินค้า',
+        template='plotly',
+    )
 
     # วิธีการชำระเงินที่ผู้ใช้ใช้บ่อยที่สุด
     payment_methods = Order.objects.exclude(payment_method=None) \
@@ -341,11 +392,11 @@ def admin_dashboard(request):
 
     # ตรวจสอบว่าไม่ใช่ค่าที่ว่างเปล่า
     if payment_methods.exists():
-        payment_names = [item['payment_method'] for item in payment_methods]
+
+        payment_names = [dict(Order.PAYMENT_METHODS).get(item['payment_method'], item['payment_method']) for item in payment_methods]
         payment_counts = [item['count'] for item in payment_methods]
 
         payment_graph = go.Figure(data=[go.Pie(labels=payment_names, values=payment_counts)])
-        payment_graph.update_layout(title='วิธีการชำระเงินที่ใช้บ่อยที่สุด')
 
         payment_graph_html = payment_graph.to_html(full_html=False)
     else:
@@ -364,7 +415,8 @@ def admin_dashboard(request):
         name='ลูกค้า', marker=dict(color='purple')
     )])
     top_customers_graph.update_layout(
-        title='ผู้ใช้ที่มียอดสั่งซื้อรวมสูงที่สุด 10 อันดับแรก', xaxis_title='ลูกค้า', yaxis_title='ยอดสั่งซื้อ (บาท)',
+        xaxis_title='ชื่อผู้ใช้',
+        yaxis_title='จำนวนคำสั่งซื้อสินค้า',
         template='plotly'
     )
 
@@ -377,55 +429,80 @@ def admin_dashboard(request):
                       category_counts]
     category_quantities = [item['count'] for item in category_counts]
 
-    last_two_category_names = category_names[-2:]
-
-    last_two_category_quantities = category_quantities[-2:]
-
     # สร้างกราฟแสดงจำนวนสินค้าตามหมวดหมู่
     category_graph = go.Figure(data=[go.Bar(
+        x=category_names,  # ชื่อหมวดหมู่ทั้งหมดที่ดึงจากฐานข้อมูล
+        y=category_quantities,  # จำนวนสินค้าในหมวดหมู่ต่างๆ
+        name='สินค้าตามหมวดหมู่',
+        marker=dict(color='orange')
+    )])
+
+    category_graph.update_layout(
+        xaxis_title='หมวดหมู่สินค้า',
+        yaxis_title='จำนวนสินค้า',
+        template='plotly',
+    )
+
+    # ------------ สอบ หาหมวดหมู่และจำนวนสินค้าและแสดงแค่ 2 อันหลังสุดท้าย ------------
+    last_two_category_names = category_names[-2:]
+    last_two_category_quantities = category_quantities[-2:]
+
+    last_two_category_graph = go.Figure(data=[go.Bar(
         x=last_two_category_names,  # ชื่อหมวดหมู่ทั้งหมดที่ดึงจากฐานข้อมูล
         y=last_two_category_quantities,  # จำนวนสินค้าในหมวดหมู่ต่างๆ
         name='สินค้าตามหมวดหมู่',
         marker=dict(color='orange')
     )])
 
-    category_graph.update_layout(
-        title='จำนวนสินค้าตามหมวดหมู่',
+    last_two_category_graph.update_layout(
         xaxis_title='หมวดหมู่สินค้า',
         yaxis_title='จำนวนสินค้า',
         template='plotly',
-        xaxis=dict(tickangle=45)  # หมุนแกน X เพื่อให้ชื่อหมวดหมู่แสดงได้ชัดเจน
     )
-
 
     # ส่งข้อมูลไปยัง template
     return render(request, 'admin/dashboard.html', {
+        'total_products': total_products,
+        'today_sales': today_sales,
         'total_sales': total_sales,
         'pending_orders': pending_orders,
         'total_customers': total_customers,
+        'month_orders': month_orders,
         'top_products_graph': top_products_graph.to_html(full_html=False),
         'category_graph': category_graph.to_html(full_html=False),  # ส่งกราฟจำนวนสินค้าตามหมวดหมู่
         'top_categories_graph': top_categories_graph.to_html(full_html=False),
         'payment_graph': payment_graph_html,
         'low_stock_count': low_stock_count,  # ส่งจำนวนสินค้าใกล้หมด
-        'top_customers_graph': top_customers_graph.to_html(full_html=False)
+        'top_customers_graph': top_customers_graph.to_html(full_html=False),
+        'last_two_category_graph' : last_two_category_graph.to_html(full_html=False)
     })
 
+@admin_required
 def product_list(request):
-    products = Product.objects.all()  # ดึงสินค้าทั้งหมดจากฐานข้อมูล
-    return render(request, 'admin/product_list.html', {'products': products})
+    products = Product.objects.all().order_by("-id")
 
+    paginator = Paginator(products, 20)  # แบ่งหน้าละ 20
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "admin/product_list.html", {
+        "products": page_obj
+    })
+
+@admin_required
 def product_add(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "เพิ่มสินค้าสำเร็จ!")
             return redirect('product_list')
     else:
         form = ProductForm()
 
     return render(request, 'admin/product_form.html', {'form': form})
 
+@admin_required
 def product_edit(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
@@ -438,9 +515,44 @@ def product_edit(request, pk):
         form = ProductForm(instance=product)
     return render(request, 'admin/product_form.html', {'form': form})
 
+@admin_required
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
         product.delete()
+        messages.success(request, "ลบสินค้าสำเร็จ!")
         return redirect('product_list')
     return render(request, 'admin/product_confirm_delete.html', {'product': product})
+
+@admin_required
+def order_list(request):
+    orders = Order.objects.all().order_by("-created_at")
+
+    # ใช้ Paginator แบ่งหน้า 20 รายการต่อหน้า
+    paginator = Paginator(orders, 20)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "admin/order_list.html", {
+        "orders": page_obj,  # ส่ง page_obj ไปแทน orders
+    })
+
+@admin_required
+def order_update_status(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+
+    if request.method == "POST":
+        new_status = request.POST.get("status")
+        if new_status in dict(Order.STATUS_CHOICES):
+            order.status = new_status
+            order.save()
+            messages.success(request, f"อัปเดตสถานะออเดอร์ #{order.id} เป็น {order.get_status_display()} แล้ว")
+        else:
+            messages.error(request, "สถานะไม่ถูกต้อง")
+
+    return redirect("order_list")
+
+@admin_required
+def order_detail(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    return render(request, 'admin/order_detail.html', {'order': order})

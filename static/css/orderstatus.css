@@ -1,120 +1,175 @@
-/* ✅ ตั้งค่าหน้าหลัก */
+/* ---------- Body ---------- */
 body {
-    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5; /* พื้นหลังสีเทาอ่อน */
+    font-family: "Tahoma", Arial, sans-serif;
+    color: #333;
     margin: 0;
     padding: 0;
 }
 
-/* ✅ กล่องติดตามคำสั่งซื้อ */
+/* ---------- Container ---------- */
 .order-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 30px auto;
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* ✅ หัวข้อ */
-h1 {
-    text-align: center;
-    font-size: 26px;
-    color: #0077b6;
-    margin-bottom: 20px;
-}
-
-/* ✅ ตารางคำสั่งซื้อ */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.table th, .table td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-}
-
-.table th {
-    background: #0077b6;
-    color: white;
-}
-
-/* ✅ ป้ายสถานะ (Status Badge) */
-.badge {
-    padding: 8px 12px;
+    background-color: #ffffff; /* พื้นหลังขาว */
+    padding: 25px 30px;
     border-radius: 10px;
-    font-weight: bold;
-    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* ✅ สีของสถานะ */
-.bg-warning { background-color: #f39c12; } /* กำลังเตรียมสินค้า */
-.bg-info { background-color: #3498db; } /* พร้อมรับสินค้า */
-.bg-success { background-color: #2ecc71; } /* สำเร็จ */
-
-/* ✅ ปุ่มดูสลิป */
-.slip-link {
-    display: inline-block;
-    padding: 6px 10px;
-    border-radius: 5px;
-    background: #0077b6;
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.slip-link:hover {
-    background: #005f99;
-}
-/* ✅ ปุ่มกลับไปเลือกสินค้า */
-.btn-primary {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
+.order-container h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #c62828; /* แดงเข้ม */
+    margin-bottom: 25px;
     text-align: center;
-    font-weight: 500; /* ตัวหนาปานกลาง */
-    font-size: 16px;
-    transition: 0.3s;
-    color: #ff5341;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่าง */
 }
 
+/* ---------- Messages ---------- */
 .messages {
     margin-bottom: 20px;
 }
 
 .alert {
-    padding: 10px;
-    border-radius: 5px;
+    padding: 12px 15px;
+    border-radius: 6px;
     margin-bottom: 10px;
-    font-size: 14px;
+    font-weight: 500;
 }
 
-.alert-success {
-    background-color: #d4edda;
+.alert.success {
+    background-color: #d4edda; /* เขียวอ่อน */
     color: #155724;
-    border: 1px solid #c3e6cb;
 }
 
-.alert-error {
-    background-color: #f8d7da;
+.alert.error {
+    background-color: #f8d7da; /* แดงอ่อน */
     color: #721c24;
-    border: 1px solid #f5c6cb;
 }
 
-.alert-warning {
-    background-color: #fff3cd;
+.alert.warning {
+    background-color: #fff3cd; /* ส้มอ่อน */
     color: #856404;
-    border: 1px solid #ffeeba;
 }
 
-.alert-info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border: 1px solid #bee5eb;
+.alert.info {
+    background-color: #cce5ff; /* น้ำเงินอ่อน */
+    color: #004085;
+}
+
+/* ---------- Table ---------- */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    background-color: #fff; /* ขาว */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table thead {
+    background: #c62828; /* แดงเข้ม */
+    color: #fff;
+    font-weight: 600;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+    background: #f2f2f2; /* เทาอ่อน */
+}
+
+.table tbody tr:hover {
+    background: #ffeaea; /* แดงอ่อน hover */
+}
+
+/* ---------- Status Badges ---------- */
+.badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.bg-warning {
+    background-color: #ff9800;
+    color: #fff;
+}
+
+.bg-info {
+    background-color: #1976d2;
+    color: #fff;
+}
+
+.bg-success {
+    background-color: #2e7d32;
+    color: #fff;
+}
+
+.bg-danger {
+    background-color: #c62828;
+    color: #fff;
+}
+
+/* ---------- Slip link ---------- */
+.slip-link {
+    display: inline-block;
+    margin-left: 5px;
+    color: #c62828;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.slip-link:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Empty Cart ---------- */
+.empty-cart {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 20px 0;
+    color: #666;
+}
+
+/* ---------- Button ---------- */
+.btn-primary {
+    display: inline-block;
+    padding: 10px 18px;
+    background-color: #c62828; /* แดงเข้ม */
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #ff5252; /* แดงอ่อน */
+    transform: scale(1.03);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .order-container {
+        padding: 20px;
+        margin: 15px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.85rem;
+        padding: 10px;
+    }
+
+    .btn-primary {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
 }

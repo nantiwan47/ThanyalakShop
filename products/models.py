@@ -84,3 +84,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.IntegerField()
+
+    @property
+    def total_price(self):
+        return self.quantity * self.price

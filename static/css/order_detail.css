@@ -1,0 +1,114 @@
+/* ===== Header ===== */
+.order-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.order-info p {
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* ===== ตารางรายการสินค้า ===== */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    background: #fff;
+}
+
+.product-table thead {
+    background: #ffe0b2; /* ส้มพาสเทล */
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.product-table th, .product-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.product-table tbody tr:nth-child(even) {
+    background: #f4f4f4;
+}
+
+.product-table tbody tr:hover {
+    background: #fff3e0;
+}
+
+/* ===== ปุ่ม ===== */
+.btn-sm {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background-color: #44acfb;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #369fe0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .product-table th, .product-table td {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+    .order-info {
+        padding: 15px;
+    }
+}
+
+/* ===== ฟอร์มแก้ไขสถานะ ===== */
+.status-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.status-form select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.status-form select:hover {
+    border-color: #44acfb;
+}
+
+/* ===== ลิงก์กลับ ===== */
+.back-link {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #44acfb;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+    color: #369fe0;
+}

@@ -1,0 +1,73 @@
+{% extends "admin_base.html" %}
+{% load static %}
+
+{% block title %}รายละเอียดคำสั่งซื้อ #{{ order.id }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/order_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>รายละเอียดคำสั่งซื้อ #{{ order.id }}</h1>
+
+<div class="order-info">
+    <p><strong>ลูกค้า:</strong> {{ order.user.username }}</p>
+    <p><strong>ยอดรวม:</strong> {{ order.total_price }} บาท</p>
+    <p><strong>สถานะ:</strong> {{ order.get_status_display }}</p>
+    <p><strong>วิธีชำระเงิน:</strong> {{ order.get_payment_method_display }}</p>
+    <p><strong>เวลานัดรับสินค้า:</strong>
+        {% if order.pickup_time %} {{ order.pickup_time|date:"d/m/Y H:i" }} {% else %}-{% endif %}
+    </p>
+    <p><strong>วันที่สร้าง:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
+    {% if order.payment_method == "transfer" %}
+        <p><strong>สลิป:</strong>
+            {% if order.slip_image %}
+                <a href="{{ order.slip_image.url }}" target="_blank">ดูสลิป</a>
+            {% else %}
+                -
+            {% endif %}
+        </p>
+{% endif %}
+
+</div>
+
+<h2>รายการสินค้า</h2>
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>สินค้า</th>
+            <th>จำนวน</th>
+            <th>ราคา/หน่วย</th>
+            <th>รวม</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }} บาท</td>
+            <td>{{ item.total_price }} บาท</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" style="text-align:right;"><strong>ยอดรวมทั้งหมด:</strong></td>
+            <td><strong>{{ order.total_price }} บาท</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>แก้ไขสถานะคำสั่งซื้อ</h2>
+<form method="post" class="status-form">
+    {% csrf_token %}
+    <select name="status">
+        {% for key, value in order.STATUS_CHOICES %}
+        <option value="{{ key }}" {% if order.status == key %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn-sm btn-primary">บันทึก</button>
+</form>
+
+<a href="{% url 'order_list' %}" class="back-link">← กลับไปหน้ารายการคำสั่งซื้อ</a>
+
+{% endblock %}

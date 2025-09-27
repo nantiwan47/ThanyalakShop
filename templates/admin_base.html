@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %}</title>
+
+    <!-- CSS หลัก -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+    <!-- CSS เฉพาะหน้า -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="admin-header">
+        <div class="nav-left">
+            <div class="logo">
+                <a href="{% url 'admin_dashboard' %}">ระบบจัดการร้านค้า</a>
+            </div>
+            <a href="{% url 'admin_dashboard' %}"
+               class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+               แดชบอร์ด
+            </a>
+            <a href="{% url 'product_list' %}"
+               class="{% if request.resolver_match.url_name == 'product_list' %}active{% endif %}">
+               สินค้า
+            </a>
+            <a href="{% url 'order_list' %}"
+               class="{% if request.resolver_match.url_name == 'order_list' %}active{% endif %}">
+               คำสั่งซื้อ
+            </a>
+        </div>
+        <div class="nav-right">
+            {% if request.user.is_authenticated %}
+                <span class="admin-user">สวัสดี {{ request.user.username }}</span>
+                <a href="{% url 'admin_logout' %}">ออกจากระบบ</a>
+            {% else %}
+                <a href="{% url 'admin_login' %}">เข้าสู่ระบบ</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="admin-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="admin-footer">
+        <p>&copy; {{ year|default:"2025" }} ระบบจัดการร้านค้า</p>
+    </footer>
+</body>
+</html>

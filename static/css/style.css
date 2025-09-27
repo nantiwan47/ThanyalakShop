@@ -1,23 +1,27 @@
-/* ตั้งค่าทั่วไป */
+/* ===================== */
+/* ตั้งค่าพื้นฐานทั่วไป */
+/* ===================== */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5; /* พื้นหลังสีเทาอ่อน */
+    background-color: #f5f5f5;
     color: #333;
 }
 
+/* ===================== */
 /* Header */
 header {
     display: flex;
-    justify-content: space-between; /* กระจายเนื้อหาไปทางซ้ายและขวา */
+    justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background: #353333; /* สีเทาเข้ม */
+    background: #353333;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; /* ให้ element หล่นบรรทัดได้บนมือถือ */
 }
 
-/* โลโก้ */
+/* Logo */
 .logo {
     font-size: 24px;
     font-weight: bold;
@@ -25,50 +29,52 @@ header {
     text-decoration: none;
 }
 
+/* ===================== */
+/* Search form */
 .search-form {
     position: relative;
-    max-width: 400px; /* ปรับความกว้างตามต้องการ */
-    width: 100%;
+    flex: 1 1 300px;
+    max-width: 400px;
+    margin: 10px;
 }
 
 .search-input {
     width: 100%;
-    background-color: white; /* พื้นหลังสีขาว */
-    padding: 10px 15px; /* ปรับ padding เพื่อไม่ให้ข้อความทับไอคอน */
+    background-color: white;
+    padding: 10px 15px;
     font-size: 14px;
-    color: #000000; /* เปลี่ยนสีตัวอักษรเป็นสีดำ */
+    color: #000;
     border: none;
-    border-radius: 25px; /* ทำให้ช่องค้นหาเป็นวงรี */
-    transition: background-color 0.3s ease;
+    border-radius: 25px;
+    box-sizing: border-box;
 }
 
 .search-input:focus {
-    outline: 2px solid white; /* กรอบสีขาว */
-    outline-offset: 2px; /* ระยะห่างของกรอบจากช่องค้นหา */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* เงาเพิ่มเติม (optional) */
-    background-color: white; /* เปลี่ยนสีพื้นหลังเมื่อโฟกัส */
+    outline: 2px solid white;
+    outline-offset: 2px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background-color: white;
 }
 
-/* ตกแต่งปุ่มค้นหา */
 .search-button {
     position: absolute;
-    right: 0px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 16px;
     color: #ff0000;
 }
 
-/* เมนูผู้ใช้ */
+/* ===================== */
+/* User menu & cart */
 .user-menu {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .cart-btn {
@@ -77,22 +83,19 @@ header {
     border-radius: 15px;
     text-decoration: none;
     font-weight: bold;
-    color: #2c3e50; /* สีเทาเข้ม */
+    color: #2c3e50;
     transition: 0.3s;
 }
 
 .cart-btn:hover {
-    background: #e0e0e0; /* สีเทาอ่อนเมื่อ hover */
+    background: #e0e0e0;
 }
-
 
 /* Dropdown */
 .dropdown-container {
     position: relative;
-    margin-left: 15px;
 }
 
-/* ตั้งค่า user name ที่จะคลิกเพื่อแสดง dropdown */
 .user-name {
     cursor: pointer;
     font-weight: bold;
@@ -104,7 +107,6 @@ header {
     color: #f0f0f0;
 }
 
-/* ตั้งค่าการแสดง dropdown */
 .dropdown {
     position: absolute;
     background: white;
@@ -121,89 +123,131 @@ header {
     z-index: 9999;
 }
 
-/* แสดง dropdown เมื่อมี class 'show' */
 .dropdown.show {
     display: block;
     opacity: 1;
 }
 
-/* รายการภายใน dropdown */
 .dropdown li {
     padding: 8px 20px;
 }
 
-/* ลิงก์ในรายการ dropdown */
 .dropdown li a {
     text-decoration: none;
     color: #333;
     display: block;
 }
 
-/* เปลี่ยนสีพื้นหลังเมื่อ hover บนลิงก์ */
 .dropdown li a:hover {
     color: #ff5341;
 }
 
+/* ===================== */
+/* Auth links */
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-
-/* ปุ่มเข้าสู่ระบบ & สมัครสมาชิก */
 .auth-links .btn {
     padding: 8px 15px;
     border-radius: 20px;
     text-decoration: none;
     font-weight: bold;
-    margin-left: 10px;
+    transition: 0.3s;
 }
 
 .auth-links .btn.primary {
     background: white;
-    color: #2c3e50; /* สีเทาเข้ม */
+    color: #2c3e50;
     border: 2px solid #ffffff;
 }
 
 .auth-links .btn.primary:hover {
-    background: #ff5341; /* สีเทาเข้มเมื่อ hover */
+    background: #ff5341;
     color: white;
 }
 
 .auth-links .btn {
     color: white;
     border: 2px solid white;
-    transition: 0.3s;
 }
 
 .auth-links .btn:hover {
     background: white;
-    color: #2c3e50; /* สีเทาเข้มเมื่อ hover */
+    color: #2c3e50;
 }
 
+/* ===================== */
+/* Media Queries สำหรับมือถือและแท็บเล็ต */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 15px;
+    }
 
-/* ✅ กล่อง Login */
-.login-container {
-    width: 350px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    .search-form {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin: 5px 0;
+    }
+
+    .search-input {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .search-button {
+        font-size: 13px;
+        padding: 4px 6px;
+    }
+
+    .user-menu, .auth-links {
+        justify-content: flex-end; /* <-- เปลี่ยนจาก space-between เป็น flex-end */
+        gap: 10px;           width: 100%;
+        margin: 5px 0;
+        font-size: 13px;
+    }
+
+    .cart-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
 }
 
-/* ✅ หัวข้อใน Login */
-.login-container h1 {
-    color: #2c3e50; /* สีเทาเข้ม */
-    margin-bottom: 15px;
-}
+@media (max-width: 480px) {
+    .search-form {
+        max-width: 180px;
+        margin: 5px auto;
+    }
 
-/* ✅ แจ้งเตือน */
-.messages {
-    margin-bottom: 10px;
-}
+    .search-input {
+        font-size: 12px;
+        padding: 4px 6px;
+    }
 
-.error-message {
-    color: #e74c3c; /* สีแดง */
-    font-size: 14px;
-    background: #ffe6e6;
-    padding: 8px;
-    border-radius: 5px;
+    .search-button {
+        font-size: 12px;
+        padding: 3px 5px;
+    }
+
+    .user-name {
+        display: none; /* ซ่อน username */
+    }
+
+    .cart-btn {
+        padding: 4px 6px;
+        font-size: 11px;
+    }
+
+    header {
+        padding: 5px 10px;
+    }
+
+    .auth-links {
+        font-size: 11px;
+        gap: 5px;
+    }
 }

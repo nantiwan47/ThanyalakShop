@@ -69,6 +69,13 @@
     gap: 20px;
 }
 
+.no-product-list {
+    text-align: center;        /* จัดข้อความให้อยู่กลางแนวนอน */
+    font-size: 1.2rem;         /* ขนาดตัวอักษรใหญ่ขึ้นเล็กน้อย */
+    color: #666666;            /* สีเทา */
+    margin: 40px 0;            /* เว้นระยะด้านบนและล่าง */
+}
+
 .product-item {
     background-color: white;
     border: 1px solid #e0e0e0;
@@ -112,15 +119,33 @@
 }
 
 /* Responsive Design */
+/* จอ Tablet (<= 1024px) */
+@media (max-width: 1024px) {
+    .product-list {
+        grid-template-columns: repeat(3, 1fr); /* 3 คอลัมน์ */
+    }
+}
+/* จอ Mobile ใหญ่ (<= 768px) */
 @media (max-width: 768px) {
     .product-list {
-        grid-template-columns: repeat(2, 1fr); /* แสดงแถวละ 2 รายการบนมือถือ */
+        grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
     }
 
     .product-item img {
-        height: 100px; /* ปรับความสูงรูปภาพบนมือถือ */
+        height: 120px; /* ปรับรูปใหญ่กว่าหน่อยให้ดูชัด */
     }
 }
+/* จอ Mobile เล็กมาก (<= 480px) */
+@media (max-width: 480px) {
+    .product-list {
+        grid-template-columns: 1fr; /* เหลือ 1 คอลัมน์ */
+    }
+
+    .product-item img {
+        height: 150px; /* ขยายภาพให้เต็ม */
+    }
+}
+
 
 /* ปุ่มเพิ่มลงในตะกร้า */
 .add-to-cart-btn {

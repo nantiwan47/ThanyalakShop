@@ -1,0 +1,214 @@
+/* ===== Header ===== */
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.product-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+/* ===== ตาราง ===== */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+        0 2px 4px rgba(0,0,0,0.1),
+        0 6px 12px rgba(0,0,0,0.18);
+    background: white;
+}
+
+.product-table thead {
+    background: #FFE0B2;
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.product-table tbody tr:nth-child(even) {
+    background: #f4f4f4;
+}
+
+.product-table tbody tr:hover {
+    background: #fff3e0;
+}
+
+/* ===== ปุ่ม ===== */
+.btn-sm {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin: 2px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-sm:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background: #44acfb;
+    color: white;
+}
+
+/* ===== Select Status ===== */
+.status-select {
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+/* ===== Pagination ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 10px;
+}
+
+.pagination a {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: #ffe0b2;
+    color: #5d4037;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.pagination a:hover {
+    background: #ffcc80;
+}
+
+.pagination span {
+    font-weight: 600;
+    color: #333;
+}
+
+/* ===== ฟอร์มแก้ไขสถานะในตาราง ===== */
+.status-form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+}
+
+.status-select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.status-select:hover {
+    border-color: #44acfb;
+}
+
+/* ปุ่มบันทึก */
+.status-form .btn-sm.btn-primary {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+    /* ทำให้ตาราง scroll ได้ในแนวนอน */
+    .product-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* ลด padding ของ cell */
+    .product-table th,
+    .product-table td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    /* ลดขนาด select + ปุ่ม */
+    .status-select {
+        padding: 3px 6px;
+        font-size: 0.85rem;
+    }
+
+    .status-form .btn-sm.btn-primary {
+        padding: 3px 8px;
+        font-size: 0.8rem;
+    }
+
+    /* Pagination ยืดเต็มหน้าจอ และ wrap ถ้าจำเป็น */
+    .pagination {
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 15px;
+    }
+
+    .pagination a {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+
+    .product-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .product-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .product-header .add-product-button {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    /* ย่อ text ในตาราง และ select ให้เล็กลงอีก */
+    .product-table th,
+    .product-table td {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+
+    .status-select {
+        padding: 2px 5px;
+        font-size: 0.8rem;
+    }
+
+    .status-form .btn-sm.btn-primary {
+        padding: 2px 6px;
+        font-size: 0.75rem;
+    }
+
+    .pagination span {
+        font-size: 0.85rem;
+    }
+}

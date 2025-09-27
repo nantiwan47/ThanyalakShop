@@ -1,0 +1,288 @@
+/* ---------- Body & Fonts ---------- */
+body {
+    margin: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* ---------- Login Page ---------- */
+.login-container,
+.register-container,
+.edit-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 15px;
+}
+
+.login-box,
+.register-box,
+.edit-profile-card {
+    background-color: white; /* ขาวเทา */
+    padding: 40px 50px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 100%;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    color: #333;
+}
+
+/* ---------- Headings ---------- */
+.login-box h2,
+.register-box h2,
+.edit-profile-card h2 {
+    color: #c62828; /* แดงเข้ม */
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+}
+
+/* ---------- Avatar ---------- */
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #c62828;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------- Input Groups ---------- */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"],
+.input-group input[type="file"] {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #c62828;
+    outline: none;
+}
+
+/* ---------- Buttons ---------- */
+.save-btn,
+.register-btn,
+.login-btn {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background-color: #c62828;
+    color: white;
+}
+
+.register-btn {
+    background-color: #c62828;
+    color: white;
+}
+
+.login-btn {
+    background-color: #c62828;
+    color: white;
+}
+
+.register-text {
+    color: #c62828;
+}
+
+.login-text {
+    color: #c62828;
+}
+
+/* Cancel / secondary buttons */
+.cancel-btn {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.cancel-btn:hover {
+    background-color: #555;
+}
+
+/* ---------- Links ---------- */
+.register-link,
+.login-link {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.register-link a,
+.login-link a {
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+
+/* ---------- Messages / Alerts ---------- */
+.messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+    .login-box,
+    .register-box,
+    .edit-profile-card {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .save-btn,
+    .login-btn,
+    .register-btn,
+    .cancel-btn {
+        width: 100%;
+        margin-top: 8px;
+    }
+}
+
+/* ---------- Profile Page ---------- */
+/* ---------- Profile Page ---------- */
+.profile-container {
+    background-color: white;
+    padding: 30px 25px;
+    border-radius: 15px;
+    width: 350px;
+    max-width: 100%;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    color: #333;
+
+    margin: 40px auto; /* ให้อยู่ตรงกลาง */
+}
+
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+.profile-email {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* ปุ่มในหน้าโปรไฟล์ */
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 250px;
+    margin: 20px auto 0; /* ⬅️ auto ทำให้ block อยู่กึ่งกลาง */
+}
+
+.profile-actions a {
+    display: block;
+    width: 100%; /* ให้เต็มเฉพาะ max-width ของ .profile-actions */
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: white;
+    text-align: center;
+}
+
+/* ปุ่มเฉพาะ */
+.edit-btn {
+    background-color: #c62828;
+}
+
+.logout-btn {
+    background-color: #333;
+}
+
+.dashboard-btn {
+    background-color: #1976d2; /* น้ำเงิน */
+}
+
+.profile-actions a:hover {
+    opacity: 0.85;
+}

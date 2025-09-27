@@ -1,38 +1,38 @@
-<div class="container mt-5">
-    <h2>เพิ่มสินค้า</h2>
-    <form method="post" enctype="multipart/form-data">
+{% extends "admin_base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        แก้ไขสินค้า
+    {% else %}
+        เพิ่มสินค้า
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/product_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="product-form-container">
+    <h1>
+        {% if form.instance.pk %}
+            แก้ไขสินค้า
+        {% else %}
+            เพิ่มสินค้า
+        {% endif %}
+    </h1>
+
+    <form method="post" enctype="multipart/form-data" class="product-form">
         {% csrf_token %}
+        {{ form.as_p }}
 
-        <div class="mb-3">
-            <label for="name" class="form-label">ชื่อสินค้า</label>
-            {{ form.name }}
+        <div class="form-buttons">
+            <a href="{% url 'product_list' %}" class="btn btn-secondary">ยกเลิก</a>
+            <button type="submit" class="btn btn-primary">
+                {% if form.instance.pk %}บันทึกการแก้ไข{% else %}เพิ่มสินค้า{% endif %}
+            </button>
         </div>
-
-        <div class="mb-3">
-            <label for="description" class="form-label">รายละเอียดสินค้า</label>
-            {{ form.description }}
-        </div>
-
-        <div class="mb-3">
-            <label for="category" class="form-label">หมวดหมู่</label>
-            {{ form.category }}
-        </div>
-
-        <div class="mb-3">
-            <label for="price" class="form-label">ราคา</label>
-            {{ form.price }}
-        </div>
-
-        <div class="mb-3">
-            <label for="stock" class="form-label">จำนวนสินค้า</label>
-            {{ form.stock }}
-        </div>
-
-        <div class="mb-3">
-            <label for="image_url" class="form-label">รูปสินค้า</label>
-            {{ form.image_url }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">บันทึกสินค้า</button>
     </form>
 </div>
+{% endblock %}

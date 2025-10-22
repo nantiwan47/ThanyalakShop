@@ -1,6 +1,6 @@
 # ร้านขายของชำธัญลักษณ์ช็อป
 
-เว็บแอปพลิเคชันร้านขายของชำ พัฒนาด้วย **Django Framework** ร่วมกับ **SQLite Database** และใช้ **HTML, CSS, JavaScript** ในการออกแบบและตกแต่งหน้าเว็บ
+พัฒนาเว็บไซต์สำหรับร้านขายของชำเป็น Mini project ในรายวิชา Data Science Toolbox (ปีการศึกษา 2/2567) เพื่อให้ลูกค้าสามารถสั่งซื้อสินค้าล่วงหน้าได้ พัฒนา Backend ด้วย Django และ Frontend ด้วย HTML, CSS, JavaScript โดยใช้ SQLite เป็นฐานข้อมูล ส่วน Dashboard ใช้ Plotly ในการแสดงผลข้อมูลสถิติ เช่น สินค้าขายดี 10 อันดับ และหมวดหมู่ที่ขายดีที่สุด โปรเจกต์นี้เป็นการทำงานแบบทีม จำนวน 4 คน
 
 <br>
 
@@ -80,3 +80,4 @@ python manage.py createsuperuser
 | 👥 User  | `user3`  | `password123` |
 | 👥 User  | `user4`  | `password123` |
 | 👥 User  | `user5`  | `password123` |
+
